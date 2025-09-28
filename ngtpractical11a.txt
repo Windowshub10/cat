@@ -1,0 +1,34 @@
+<html>
+<head>
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+$("button").click(function(){
+$("#box").text("Hello World").css("background-color","purple").
+animate({
+left:'250px',
+opacity:'0.5',
+height:'150px',
+width:'150px'
+},2000).slideUp(2000).slideDown(2000);
+});
+});
+</script>
+<style>
+#box{
+width:200px;
+height:50px;
+background-color:orange;
+color:yellow;
+font-size:20px;
+text-align:centre;
+}
+</style>
+</head>
+<body>
+<div id="box">Hello</div>
+<button>Start Animation</button>
+</body>
+</html>

@@ -1,0 +1,40 @@
+//App.js
+
+import React from 'react';
+
+function ShoppingList() {
+  const products = [
+    { id: 1, title: 'Apples' },
+    { id: 2, title: 'Bananas' },
+    { id: 3, title: 'Milk' },
+  ];
+
+  return (
+    <div>
+      <h2>Shopping List</h2>
+      <ul>
+        {products.map(product => (
+          <li key={product.id}>{product.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default ShoppingList;
+
+
+//index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import ShoppingList from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <ShoppingList/>
+);
+reportWebVitals();
+

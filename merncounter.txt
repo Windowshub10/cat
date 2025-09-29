@@ -1,0 +1,42 @@
+//App.js
+
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0); // Initialize count state to 0
+
+  const increment = () => {
+    setCount(count + 1); // Update count state
+  };
+
+  const decrement = () => {
+    setCount(count - 1); // Update count state
+  };
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <button onClick={increment}>Increment</button>
+      <button onClick={decrement}>Decrement</button>
+    </div>
+  );
+}
+
+export default Counter;
+
+
+
+//index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import Counter from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <Counter/>
+);
+
+reportWebVitals();

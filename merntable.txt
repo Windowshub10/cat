@@ -1,0 +1,77 @@
+npm install --save bootstrap react-bootstrap
+
+// App.js
+
+import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import SimpleTable from './SimpleTable';
+
+function App() {
+  return (
+    <div className="container">
+      <div style={{ padding: "10px" }}>
+        <div>
+          <SimpleTable />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+// index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+
+//SimpleTable
+
+
+import { Table } from 'react-bootstrap';
+function SimpleTable() {
+   return (
+      <Table striped bordered hover>
+         <thead>
+            <tr>
+               <th>#</th>
+               <th>Name</th>
+               <th>Age</th>
+               <th>Email</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>1</td>
+               <td>rohan</td>
+               <td>25</td>
+               <td>rohan@example.com</td>
+            </tr>
+            <tr>
+               <td>2</td>
+               <td>rohit</td>
+               <td>15</td>
+               <td>rohit@example.com</td>
+            </tr>
+            <tr>
+               <td>3</td>
+               <td>Geeta</td>
+               <td>23</td>
+               <td>geeta@example.com</td>
+            </tr>
+         </tbody>
+      </Table>
+   );
+}
+export default SimpleTable;

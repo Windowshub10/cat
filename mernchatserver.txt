@@ -1,0 +1,121 @@
+Step 1: Create Folder chat-server
+
+mkdir chat-server
+cd .\chat-server\
+
+Step 2: Create folder server 
+
+mkdir server
+cd server
+npm init -y
+npm install express socket.io cors
+
+Step3: Create file in server named server.js
+
+//server.js
+
+
+  const express = require ('express'); 
+    const http = require ('http'); 
+    const socketIo = require ('socket.io'); 
+    const cors = require ('cors'); 
+ 
+    const app = express (); 
+    const server = http.createServer (app); 
+    const io = socketIo(server, { 
+        cors: { 
+            origin: '*',  
+            methods: ['GET', 'POST'] 
+        } 
+    }); 
+ 
+    app.use(cors());  
+ 
+    io.on('connection', (socket) => { 
+        console.log('A user connected:', socket.id); 
+ 
+        socket.on('message', (message) => { 
+            console.log('Message received:', message); 
+            io.emit('message', message);  
+        }); 
+ 
+        socket.on('disconnect', () => { 
+console.log('User disconnected:', socket.id); 
+}); 
+}); 
+const PORT = process.env.PORT || 5000; 
+server.listen(PORT, () => { 
+console.log(`Server running on port ${PORT}`); 
+}); 
+
+
+Step 4: Create react app
+
+(optional: to come out from server folder ) cd ..
+npm create react-app client
+cd client
+npm audit fix --force
+npm install socket.io-client
+
+
+//App.js
+
+
+import React, { useState, useEffect } from 'react';
+    import io from 'socket.io-client';
+
+    const socket = io('http://localhost:5000'); // Connect to your server
+
+    function App() {
+        const [message, setMessage] = useState('');
+        const [messages, setMessages] = useState([]);
+
+        useEffect(() => {
+            socket.on('message', (msg) => {
+                setMessages((prevMessages) => [...prevMessages, msg]);
+            });
+
+            return () => {
+                socket.off('message');
+            };
+        }, []);
+
+        const sendMessage = (e) => {
+            e.preventDefault();
+            if (message.trim()) {
+                socket.emit('message', message);
+                setMessage('');
+            }
+        };
+
+        return (
+            <div>
+                <h1>Real-time Chat</h1>
+                <div>
+                    {messages.map((msg, index) => (
+                        <p key={index}>{msg}</p>
+                    ))}
+                </div>
+                <form onSubmit={sendMessage}>
+                    <input
+                        type="text"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Type a message..."
+                    />
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        );
+    }
+
+    export default App;
+
+Step 5: Create two terminal
+
+1st terminal: Go to the server folder 
+cmd: node server.js
+
+2nd terminal: Go to client folder
+cmd: npm install react-script@latest 
+npm start

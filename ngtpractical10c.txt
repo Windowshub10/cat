@@ -1,0 +1,44 @@
+<html> 
+
+// jQuery fading effects, jQuery Sliding effects. 
+
+
+<head> 
+<script 
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+<script> 
+$(document).ready(function(){ 
+$("#b1").click(function(){ 
+$("#box").fadeOut("slow"); 
+}); 
+$("#b2").click(function(){ 
+$("#box").fadeIn("slow"); 
+}); 
+$("#b3").click(function(){ 
+$("#box").slideUp("slow"); 
+}); 
+$("#b4").click(function(){ 
+$("#box").slideDown("slow"); 
+}); 
+}); 
+</script> 
+<style> 
+#box{ 
+width: 150px ; 
+height : 30px ; 
+background-color : lightblue; 
+font-size : 18px ; 
+color : white ; 
+text-align: center; 
+} 
+</style> 
+</head> 
+<body> 
+<h2>Fade & Slide</h2> 
+<div id="box">Animate</div><br> 
+<button id="b1">Fade out</button><br><br> 
+<button id="b2">Fade in</button><br><br> 
+<button id="b3">Slide up</button><br><br> 
+<button id="b4">Slide Down</button> 
+</body> 
+</html>

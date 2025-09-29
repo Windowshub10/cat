@@ -1,0 +1,26 @@
+
+
+
+//write the query in cmd to export MongoDB
+
+mongoexport --db tours_manage --collection tours --out "File Location" --jsonArray
+
+
+
+//data
+
+[
+  {
+    "_id": {
+      "$oid": "68ad31066032682d5f4e6b13"
+    },
+    "title": "Himalayan adventure",
+    "destination": "Shimla",
+    "duration": 5.0,
+    "price": 50000.0,
+    "available_seats": 20.0,
+    "startDate": {
+      "$date": "2025-08-26T00:00:00.000Z"
+    }
+  }
+]

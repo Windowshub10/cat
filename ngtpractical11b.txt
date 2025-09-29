@@ -1,0 +1,60 @@
+//jQuery Callback, jQuery Get and Set Contents 
+
+
+<html> 
+<head> 
+<script 
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+<script> 
+$(document).ready(function(){ 
+// Functionality from Code 1 
+$("#b_hide").click(function(){ 
+$("#div_hide").hide("slow", function(){ 
+alert("Text is Hidden..."); 
+}); 
+}); 
+// Functionality from Code 2 
+$("#b1").click(function(){ 
+$("#pp1").text("Text: " + $("#p1").text()); 
+}); 
+$("#b2").click(function(){ 
+$("#pp2").text("Text: " + $("#p1").html()); 
+}); 
+$("#b3").click(function(){ 
+alert("Value: " + $("#test1").val()); 
+}); 
+$("#b4").click(function(){ 
+$("#p2").text("Hello world!"); 
+}); 
+$("#b5").click(function(){ 
+$("#p3").html("<b>Hello world!</b>"); 
+}); 
+$("#b6").click(function(){ 
+$("#test2").val("Dhruv Jain"); 
+}); 
+}); 
+</script> 
+</head> 
+<body> 
+<h3>Hide Method</h3> 
+<button id="b_hide">Click me to Hide</button><br> 
+<div id="div_hide">Veadant. .... !</div> 
+<hr> 
+<h3>Get Method</h3> 
+<p>Name: <input type="text" id="test1" value="Dhruv"></p> 
+<p id="p1">This is Not <b>Para</b> its an <i>Single Line</i></p> 
+<p id="pp1"></p> 
+<p id="pp2"></p> 
+<button id="b1">Get Text</button> 
+<button id="b2">Get HTML</button> 
+<button id="b3">Get Value</button> 
+<hr> 
+<h3>Set Method</h3> 
+<p id="p2">This is an 1st Para</p> 
+<p id="p3">This is an 2nd Para</p> 
+<p>Input field: <input type="text" id="test2" value="Dhruv"></p> 
+<button id="b4">Set Text</button> 
+<button id="b5">Set HTML</button> 
+<button id="b6">Set Value</button> 
+</body> 
+</html>

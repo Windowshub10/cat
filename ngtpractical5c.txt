@@ -1,0 +1,32 @@
+ // Write a MongoDB query to use first and last expression.
+
+1. insert the documents into the collection : (collection : orders , Database : Org)
+
+[
+  { "_id": 1, "custId": "C1", "amount": 200, "date": { "$date": "2025-09-01T00:00:00Z" } },
+  { "_id": 2, "custId": "C1", "amount": 350, "date": { "$date": "2025-09-05T00:00:00Z" } },
+  { "_id": 3, "custId": "C1", "amount": 400, "date": { "$date": "2025-09-10T00:00:00Z" } },
+  { "_id": 4, "custId": "C2", "amount": 150, "date": { "$date": "2025-09-03T00:00:00Z" } },
+  { "_id": 5, "custId": "C2", "amount": 300, "date": { "$date": "2025-09-08T00:00:00Z" } }
+]
+
+
+2. Now Do the Queries to use first and Last Expressions :
+
+
+> use Org
+
+> db.orders.aggregate([
+
+  { $sort: { date: 1 } },
+
+  {
+    $group: {
+      _id: "$custId",
+      firstOrderDate: { $first: "$date" },
+      firstOrderAmount: { $first: "$amount" },
+      lastOrderDate: { $last: "$date" },
+      lastOrderAmount: { $last: "$amount" }
+    }
+  }
+]);

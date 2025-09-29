@@ -1,0 +1,46 @@
+//jQuery Basic, jQuery Events
+
+<html> 
+<head> 
+<title>Merged JQuery Code</title> 
+<script 
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+<script> 
+$(document).ready(function(){ 
+// Code from original 'code 1' 
+$("#b1").click(function(){ 
+$("#box").text("Text changed").css("background-color","purple"); 
+}); 
+$("#b2").click(function(){ 
+$("#box").hide(); 
+}); 
+$("#b3").click(function(){ 
+$("#box").show(); 
+}); 
+// Code from original 'code 2' 
+$("#p1").hover(function(){ 
+alert("Hello,Welcome!"); 
+}); 
+}); 
+</script> 
+<style> 
+/* Styles from original 'code 1' */ 
+#box{ 
+width: 100px; 
+height: 50px; 
+background-color: lightblue; 
+font-size: 20px; 
+color: white; 
+text-align: center; 
+} 
+</style> 
+</head> 
+<body> 
+<div id="box">Hello</div><br> 
+<button id="b1">Change Text</button><br><br> 
+<button id="b2">Hide Box</button><br><br> 
+<button id="b3">Show Box</button>
+<hr> 
+<p id="p1">This is a paragraph.</p> 
+</body> 
+</html> 

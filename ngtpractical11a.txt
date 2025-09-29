@@ -1,0 +1,35 @@
+//jQuery Animation effects, jQuery Chaining. 
+
+<html> 
+<head> 
+<script 
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+<script> 
+$(document).ready(function(){ 
+$("button").click(function(){ 
+$("div").text("Hello World!..") 
+.css("background-color", "orange") 
+.animate({ 
+left: '250px', 
+opacity: '0.5', 
+height: '150px', 
+width: '150px' 
+}, 2000) 
+.slideUp(2000) 
+.slideDown(2000); 
+}); 
+}); 
+</script> 
+</head> 
+<body> 
+<button>Start Animation</button> 
+<div id="box" style="background:yellow; 
+color:red; 
+height:100px; 
+width:100px; 
+position:absolute;"> 
+Hello.. 
+</div> 
+</body> 
+</html>
+

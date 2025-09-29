@@ -1,0 +1,20 @@
+// Write a MongoDB query to use push and addToSet expression 
+
+
+1. create an Database named : vedant and add collection named : student 
+2. in collection add this Document : 
+{ 
+"_id": 1, 
+"name": "vedant", 
+"subjects": ["Maths", "English"] 
+} 
+ 
+ 
+3. on mongo exe run this queries : 
+> use vedant 
+> db.student.find() 
+> db.students.updateOne( { _id: 1 } , { $push: { subjects: "Science" } }) 
+> db.student.find() 
+> db.students.updateOne({ _id: 1 },{ $addToSet: { subjects: "English" } }) 
+> db.students.updateOne({ _id: 1 },{ $addToSet: { subjects: ["History", "English"] 
+} } )

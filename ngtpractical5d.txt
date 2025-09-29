@@ -1,0 +1,17 @@
+//Write a MongoDB query to use MapReduce Function
+
+1. create an Database and add collection.. 
+2. in collection add this Document : 
+[ 
+{ _id: 1, name: "Mobile", category: "Electronics", price: 8500 }, 
+{ _id: 2, name: "TV", category: "Electronics", price: 10000 }, 
+{ _id: 3, name: "Shoes", category: "Footwear", price: 3000 }, 
+{ _id: 4, name: "Sandals", category: "Footwear", price: 3500 }, 
+{ _id: 5, name: "Mixer", category: "Home Appliances", price: 2500 } 
+] 
+3. on mongo exe run this queries : 
+> use vedant 
+> var mapfunction = function () {emit(this.category, this.price);}; 
+> var reducefunction = function (key, values) {return Array.sum(values);}; 
+> db.products.mapReduce(mapfunction, reducefunction,{ out: "categoryy" }); 
+> db.categoryy.find();

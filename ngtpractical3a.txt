@@ -1,0 +1,22 @@
+// create a json file to import, save the file (.json) extention
+
+[
+  {
+    "name": "Vedant Shinde",
+    "role": "Video Editor",
+    "skills": ["Premiere Pro", "After Effects", "Photoshop"],
+    "experience": 2
+  },
+  {
+    "name": "Dhruv Jain",
+    "role": "Graphic Designer",
+    "skills": ["Illustrator", "Figma", "Canva"],
+    "experience": 1
+  }
+]
+
+
+//write query on cmd
+
+
+mongoimport --db office --collection employees --file "Your file path" --jsonArray

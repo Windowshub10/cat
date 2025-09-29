@@ -1,0 +1,42 @@
+
+
+
+// Connecting Python with MongoDB and inserting, retrieving, updating and deleting. 
+
+1. we have to create an python File to connect with mongo DB
+
+2. In Python File Write the Following Code:**
+
+```python
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017")
+db = client["College"]
+collection = db["students"]
+
+collection.delete_many({})
+collection.insert_one({"name": "Diya", "age": 20})
+collection.insert_many([
+  {"name": "Dhruv", "age": 19},
+  {"name": "Vedant", "age": 21}
+])
+
+print("Document Inserted....")
+print("Displaying Document...")
+for student in collection.find():
+  print(student)
+
+collection.update_one({"name": "Dhruv"}, {"$set": {"age": 20}})
+print("Document Updated (age set to 20)....")
+print("Displaying Updated Document...")
+for student in collection.find():
+  print(student)
+```
+
+3. Run mongod from bin folder.
+
+4. Open Command prompt & enter command :
+
+First locate the folder where the .py file was saved..
+
+Enter command – python “filename.py”

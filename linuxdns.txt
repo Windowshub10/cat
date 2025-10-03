@@ -1,0 +1,183 @@
+Phase 1: Configure the Network for a Static IP
+Ensure your server has a fixed IP address so other computers can reliably find it.
+
+Edit the Network Interface File
+
+Open the file for your primary network connection (eth0):
+
+Bash
+gedit /etc/sysconfig/network-scripts/ifcfg-eth0
+
+Set its contents to this, which configures the static IP:
+
+DEVICE=eth0
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR=192.168.1.3
+NETMASK=255.255.255.0
+DNS1=192.168.1.3
+TYPE=Ethernet
+Update the Hosts File
+
+Open the hosts file:
+
+Bash
+gedit /etc/hosts
+
+Add this line to map your hostname to its IP address locally:
+
+192.168.1.3   server.tyit.com
+
+Set the System Hostname
+
+Open the network configuration file:
+
+Bash
+gedit /etc/sysconfig/network
+
+Ensure it contains these two lines:
+
+NETWORKING=yes
+HOSTNAME=server.tyit.com
+Set the DNS Resolver
+
+Open the resolver configuration file:
+
+Bash
+gedit /etc/resolv.conf
+
+Make it point to your new DNS server:
+
+search tyit.com
+nameserver 192.168.1.3
+Restart the Network
+
+Apply all these changes by restarting the network service:
+
+Bash
+service network restart
+
+### Phase 2: Install and Configure BIND (The DNS Software)
+Install the BIND software and set up its main configuration files.
+
+Install BIND
+
+Navigate to the Packages directory on your RHEL installation media and run:
+
+Bash
+rpm -ivh bind-*.rpm
+
+Configure named.conf
+
+Open the main BIND configuration file:
+
+Bash
+gedit /etc/named.conf
+
+Ensure the service listens on your server's IPv4 address:
+
+listen-on port 53 { 192.168.1.3; };
+// listen-on-v6 port 53 { ::1; };
+Define Your DNS Zones
+
+Open the zones file:
+
+Bash
+gedit /etc/named.rfc1912.zones
+Add the definitions for your forward and reverse zones at the bottom:
+
+zone "tyit.com" IN {
+        type master;
+        file "forward.zone";
+        allow-update { none; };
+};
+
+zone "1.168.192.in-addr.arpa" IN {
+        type master;
+        file "reverse.zone";
+        allow-update { none; };
+};
+### Phase 3: Create the DNS Zone Files
+These files contain the actual DNS records that map names to IPs and vice-versa.
+
+Navigate to the BIND Directory
+
+Bash
+cd /var/named
+
+Create Your Zone Files from Templates
+
+Bash
+
+cp named.localhost forward.zone
+cp named.loopback reverse.zone
+
+Edit the Forward Zone File (forward.zone)
+
+Open the file (gedit forward.zone) and replace the default text with this:
+
+$TTL 1D
+@   IN SOA  server.tyit.com. root.server.tyit.com. (
+                        0       ; serial
+                        1D      ; refresh
+                        1H      ; retry
+                        1W      ; expire
+                        3H )    ; Negative Cache TTL
+;
+        IN  NS      server.tyit.com.
+server  IN  A       192.168.1.3
+
+Edit the Reverse Zone File (reverse.zone)
+
+Open the file (gedit reverse.zone) and replace the default text with this:
+
+$TTL 1D
+@   IN SOA  server.tyit.com. root.server.tyit.com. (
+                        0       ; serial
+                        1D      ; refresh
+                        1H      ; retry
+                        1W      ; expire
+                        3H )    ; Negative Cache TTL
+;
+        IN  NS      server.tyit.com.
+3   IN  PTR     server.tyit.com.
+
+### Phase 4: Finalize, Start, and Test
+Set permissions, start the service, and verify everything works.
+
+Set File Permissions
+
+While in the /var/named directory, run:
+
+Bash
+
+chgrp named forward.zone
+chgrp named reverse.zone
+
+Start the BIND Service
+
+Bash
+
+service named start
+
+Run the Final Tests
+
+Use dig to perform a forward lookup (name to IP):
+
+Bash
+
+dig server.tyit.com
+
+Perform a reverse lookup (IP to name):
+
+Bash
+
+dig -x 192.168.1.3
+
+You can also use nslookup for interactive testing:
+
+Bash
+
+nslookup server.tyit.com
+
+

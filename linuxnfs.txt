@@ -1,0 +1,95 @@
+Part 1:- Setting UP the NFS server.
+
+Step 1: Verify NFS Installation 
+
+
+Command:- rpm -qa | grep nfs (if not: rpm -ivh nfs*) 
+
+
+Step 2: Find the server's IP Address 
+
+
+Command:- ifconfig eth0 
+
+
+Step 3:- Create & Prepare the Share directory 
+
+
+Command:- 
+
+
+mkdir /home/servernfs 
+
+
+touch /home/servernfs/testfile.txt 
+
+
+chmod 777 /home/servernfs 
+
+
+Step 4:- Configure the Export file 
+
+
+ Open the configuration file using a text editor 
+
+
+Command:- vi /etc/exports
+
+Add the foll line to the file. The file line tells the NFS service what to share & with whom. (Press i) 
+
+
+Command :- /home/servernfs *(rw,sync) 
+
+Save & Close the file. (Press Esc key -> Type :wq) & Enter. 
+
+Step 5:-
+
+Restart the NFS service 
+
+This command forces NFS to re-read your 
+
+/etc/exports file & start sharing the directory. 
+
+
+Command:- service nfs restart 
+
+Stop the Firewall 
+
+The firewall will block incoming connections by default. 
+
+
+Command:- service iptables stop 
+
+Verify the Export 
+
+The command asks your server to show which directories it is exporting. It's a final check to confirm everything on the server is working correctly. 
+
+
+Command:- showmount -e localhost 
+
+
+The NFS server is fully configured now, running & showing the /home/servernfs directory. 
+
+
+The final part of the practical is to set up the NFS client to access this share. 
+
+
+Part 2:- Setting Up the NFS client 
+
+
+Step 1:- Create a Mount Point 
+
+
+Command:- mkdir /home/clientnfs 
+
+
+Step 2:- Mount the Shared directory 
+
+
+Command:- mount 192.168.1.3:/home/servernfs /home/clientnfs 
+
+
+Step 3:- Verify the Mount 
+
+
+Command:- ls /home/clientnfs 

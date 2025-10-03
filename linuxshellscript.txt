@@ -1,0 +1,158 @@
+1. Write a Shell Script that will accept directory name, if the directory does not exist create a directory with 3 empty files and if directory exist then list its contents.
+-> In terminal run this:
+
+(1) Make a shell script by ".sh"
+
+Cmd: gedit your_script.sh
+
+(2) then Enter the script:
+
+Bash
+
+echo "enter directory"
+read dir_n
+if [ -d "$dir_n" ]; then
+  echo "directory '$dir_n' exist and listing content."
+  ls "$dir-n"
+else
+  echo "directory '$dir_n' doesn't exist, creating..."
+  mkdir "$dir_n"
+  echo "creating 3 empty files"
+  touch "$dir_n/f1.txt" "$dir-n/f2.txt" "$dir-n/f3.txt"
+  echo "file created successfully in '$dir_n'"
+fi
+(3) then make it executable.
+
+Cmd: chmod +x your_script.sh
+
+(4) run the shell script
+
+Cmd: ./your_script.sh
+
+
+
+
+
+
+2. Write a Shell Script for process Management
+list the name of currently logged in user
+
+Check that group which current user belong to
+
+view acting process
+
+find information of Process like pid, user/owner, pty.
+
+-> In terminal run this:
+
+(1) Make an Shell script by ".sh"
+
+Cmd: gedit your_script1.sh
+
+(2) then enter the script:
+
+Bash
+
+echo "---"
+echo "1) currently loged in users:"
+whoami
+echo "---"
+echo "2) Group of current user:"
+groups
+id
+echo "---"
+echo "3) Current running (active) processes:"
+ps -e
+echo "---"
+echo "4) Process details (PID, user, Tty, COMMAND)"
+ps -eo pid,user,tty,comm
+echo "---"
+(3) then Make it executable script
+
+Cmd: chmod +x your_script1.sh
+
+(4) run the shell script
+
+Cmd: ./your_script1.sh
+
+
+
+
+
+
+
+3. write a shell script for directory Management with the following menu options, create and remove directory, copy directory, move directory, list the contents of directory, change the directory, exit
+-> In terminal run this:
+
+(1) Make an Shell Scripts by ".sh"
+
+Cmd: gedit your_script2.sh
+
+(2) then enter the script:
+
+Bash
+
+while true
+do
+  echo "---"
+  echo "Directory Management Menu"
+  echo "---"
+  echo "1) Create directory"
+  echo "2) Remove directory"
+  echo "3) Copy directory"
+  echo "4) Move directory"
+  echo "5) list content of directory"
+  echo "6) Change directory"
+  echo "7) Exit"
+  read -p "Enter your choice [-1-7]: " choice
+  echo "---"
+
+  case $choice in
+    1) # Create
+      read -p "Enter directory name to create: " dname
+      mkdir "$dname"
+      echo "Directory '$dname' created"
+      ;;
+    2) # remove
+      read -p "Enter directory name to remove: " dname
+      rm -r "$dname"
+      echo "Directory '$dname' removed"
+      ;;
+    3) # copy
+      read -p "Enter Source " src
+      read -p "Enter destination " dest
+      cp -r src dest
+      echo "Directory '$src' Copied to '$dest'"
+      ;;
+    4) # Move
+      read -p "Enter Source " src
+      read -p "Enter destination " dest
+      mv "$src" "$dest"
+      ;;
+    5) # list
+      read -p "Enter directory to list: " dname
+      echo "listing content of '$dname': "
+      ls "$dname"
+      ;;
+    6) # Change directory
+      read -p "Enter directory to change to: " dname
+      cd "$dname" || echo "Error: Directory not found!!!"
+      echo "Now in: $(pwd)"
+      ;;
+    7) # Exit
+      echo "Exiting Directory Management."
+      exit 0
+      ;;
+    *) # Invalid Choice
+      echo "Invalid choice, Please Enter number between [1-7]."
+      ;;
+  esac
+  echo "---"
+done
+(3) Make it an executable script:
+
+cmd: chmod +x your_script2.sh
+
+(4) run the shell script.
+
+Cmd: ./your_script2.sh

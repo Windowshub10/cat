@@ -14,7 +14,7 @@ def bfs(graph, start):
             visited.add(vertex)
             queue.extend(graph[vertex] - visited)
     return visited
-print(bfs(graph, 'C')) # {'B', 'C', 'A', 'F', 'D', 'E'}
+print(bfs(graph, 'C')) 
 def bfs_paths(graph, start, goal):
     queue = [(start, [start])]
     while queue:
@@ -24,12 +24,13 @@ def bfs_paths(graph, start, goal):
                 yield path + [next]
             else:
                 queue.append((next, path + [next]))
-print(list(bfs_paths(graph, 'A', 'F')))# [['A', 'C', 'F'], ['A', 'B', 'E', 'F']]
+print(list(bfs_paths(graph, 'A', 'F')))
 def shortest_path(graph,start,goal):
     try:
         return next(bfs_paths(graph,start,goal))
     except StopIteration:
         return None
 print(shortest_path(graph,'A','F'))
+
 
 

@@ -1,0 +1,129 @@
+
+
+
+1.
+Create a user information without home directory and id 1286
+
+
+Answer:
+
+Bash
+
+# useradd -M -u 1286 user1
+# grp '^userl': /etc/passwd
+
+
+2.
+Create a user with user id 9846 and group id 1689
+
+
+Answer:
+
+Bash
+
+# groudadd -g 1689 grque2
+# useradd -u 9846 -g 1689 que2
+
+
+3.
+Remove tyit1 from project group
+
+
+Answer:
+
+Bash
+
+# gpasswd -d tyitl project
+
+
+4. add user name :tyit using useradd command.
+Create a password for this user using passwd command
+
+
+Answer:
+
+Bash
+
+# useradd que4
+# passwd que4
+
+
+5. Create 2 to 3 users.
+Examine home directory of each user
+
+
+Answer:
+
+Bash
+
+# useradd usr1
+# passwd usr1
+# useradd usr2
+# passwd usr2
+# useradd usr3
+# passwd usr3
+# ls -ld /home/usr1 /home/usr2 /home/usr3
+
+
+
+
+
+6.
+Examine /etc/passwd /etc/groups/etc/shadow file with repositories
+
+
+Answer:
+
+Bash
+
+# grep '^tyit' /etc/shadow
+# grep '^tyit' /etc/group
+# grep '^tyit' /etc/passwd
+
+
+7.
+Create two groups manager, staff add user in this group
+
+
+Answer:
+
+Bash
+
+# groupadd manager
+# groupadd staff
+# useradd que7
+# usermod -oG manager, staff que7
+
+
+8. login using root account with userdel command delete any two users.
+Use various options of userdel
+
+
+Answer:
+
+Bash
+
+# userdel tyit2
+# userdel -r tyitl
+# userdel -r -f tyit4
+
+
+9.
+Create directories and sub directories and pass permission
+
+
+Answer:
+
+Bash
+
+# mkdir perm
+# cd perm
+# touch f1 f2 f3
+# chmod 4 f1
+# ls -l
+# chmod 2 f2
+# ls -l
+# chmod 6 f2
+# ls -l
+# chmod -R 777 f3
+# ls -l

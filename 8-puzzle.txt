@@ -24,7 +24,7 @@ def find_location(rows, element_to_find):
             if element == element_to_find:
                 return ir, ic
 
-# Cache goal positions for faster heuristic calculation
+
 goal_positions = {}
 rows_goal = string_to_list(GOAL)
 for number in '12345678e':
@@ -52,7 +52,7 @@ class EightPuzzleProblem(SearchProblem):
         row_e, col_e = find_location(rows, 'e')
         row_n, col_n = find_location(rows, action)
 
-        # Swap the empty space with the chosen tile
+      
         rows[row_e][col_e], rows[row_n][col_n] = rows[row_n][col_n], rows[row_e][col_e]
         return list_to_string(rows)
 
@@ -71,12 +71,13 @@ class EightPuzzleProblem(SearchProblem):
             distance += abs(row_n - row_goal) + abs(col_n - col_goal)
         return distance
 
-# Run A* search
+
 problem = EightPuzzleProblem(INITIAL)
 result = astar(problem)
 
-# Display solution path
+
 for action, state in result.path():
     print('Move tile:', action)
     print(state)
     print('---')
+

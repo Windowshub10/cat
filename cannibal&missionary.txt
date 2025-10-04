@@ -1,4 +1,4 @@
-//cannibal&missionary01:20 PM 29-09-2025
+//cannibal&missionary
 
 import math
 class State:
@@ -9,7 +9,7 @@ class State:
         self.cannibalRight = cannibalRight
         self.missionaryRight = missionaryRight
         self.parent = None
-01:20 PM 29-09-2025
+
     def is_goal(self):
         return self.cannibalLeft == 0 and self.missionaryLeft == 0
 
@@ -120,3 +120,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

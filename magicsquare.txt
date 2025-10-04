@@ -1,6 +1,6 @@
 
 
-# A function to generate odd sized magic squares
+#  magic squares
 def generate_square(n):
     # initialize magic square
     mat = [[0] * n for _ in range(n)]
@@ -48,3 +48,4 @@ n = 5
 magic_square = generate_square(n)
 for row in magic_square:
     print(" ".join(map(str, row)))
+

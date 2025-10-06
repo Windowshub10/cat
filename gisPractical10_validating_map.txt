@@ -1,0 +1,105 @@
+Practical No. 10 on validating map data. 
+Step 1: Structural Data Checks (in Excel)
+
+Open the File: Open the kenyel_epidemiological_data file in Excel.
+
+Find Duplicates:
+
+Select the 
+
+child id column.
+
+Go to the 
+
+Home tab → Conditional Formatting → Highlight Cells Rules → Duplicate Values to see duplicate entries.
+
+
+Remove Duplicates: Select all the data, go to the Data tab, and click Remove Duplicates.
+
+Code Variables:
+
+Select the 
+
+sex column.
+
+Press Ctrl+F to open Find and Replace. Replace all instances of 
+
+M with 1 and F with 2.
+
+Step 2: Verifying Data Plausibility (in Excel)
+
+Create a Scatter Plot: Select the age column, go to the Insert tab, and choose Scatter to visualize the data distribution.
+
+Filter for Outliers:
+
+Go to the 
+
+Home tab and select Sort & Filter → Filter to add filter dropdowns to each column header.
+
+Click the filter on the age column and select Number Filters → Greater Than…. Enter 
+
+20 to find ages that are outside the expected range.
+
+Step 3: Logical Data Checks (in Excel)
+Create a Pivot Table:
+
+Go to the 
+
+Insert tab and select PivotTable.
+
+Drag 
+
+stool into the Rows area and one of the infection status columns (e.g., sth_inf) into both the Columns and Values areas.
+
+Change the Value Field Settings for the value from 'Sum' to 
+
+Count to cross-tabulate the data.
+
+Use a Formula Check:
+
+Create a new column named 
+
+check.
+
+In the first cell of the column, enter the formula: 
+
+=IF(AND(H2=0, NOT(P2="")),1,0).
+
+
+Copy this formula down for all rows. This checks for logical inconsistencies.
+
+Use the filter on the 
+
+check column to show only rows with a value of 1, which represent potential errors.
+
+Step 4: Verifying Coordinates (in QGIS)
+
+Start a New Project: Open QGIS and create a new project.
+
+
+Add Vector Layer: Add the Kenya_admin.shp file to the project.
+
+Add Delimited Text Layer:
+
+Navigate to 
+
+Layer → Add Layer → Add Delimited Text Layer.
+
+Select the 
+
+Kenya_school_location.csv file.
+
+In the 
+
+Geometry Definition section, ensure the coordinate system (CRS) is set to WGS84.
+
+Add the layer to see if the school locations align correctly with the admin boundary map.
+
+
+Sources
+
+
+
+
+
+

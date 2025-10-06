@@ -1,123 +1,57 @@
-//cannibal&missionary
-
-import math
-class State:
-    def __init__(self, cannibalLeft, missionaryLeft, boat, cannibalRight, missionaryRight):
-        self.cannibalLeft = cannibalLeft
-        self.missionaryLeft = missionaryLeft
-        self.boat = boat
-        self.cannibalRight = cannibalRight
-        self.missionaryRight = missionaryRight
-        self.parent = None
-
-    def is_goal(self):
-        return self.cannibalLeft == 0 and self.missionaryLeft == 0
-
-    def is_valid(self):
-        return (self.missionaryLeft >= 0 and self.missionaryRight >= 0 and
-                self.cannibalLeft >= 0 and self.cannibalRight >= 0 and
-                (self.missionaryLeft == 0 or self.missionaryLeft >= self.cannibalLeft) and
-                (self.missionaryRight == 0 or self.missionaryRight >= self.cannibalRight))
-
-    def __eq__(self, other):
-        return (self.cannibalLeft == other.cannibalLeft and
-                self.missionaryLeft == other.missionaryLeft and
-                self.boat == other.boat and
-                self.cannibalRight == other.cannibalRight and
-                self.missionaryRight == other.missionaryRight)
-
-    def __hash__(self):
-        return hash((self.cannibalLeft, self.missionaryLeft, self.boat, self.cannibalRight, self.missionaryRight))
-
-    def successors(self):
-        children = []
-        if self.boat == 'left':
-            # Move 2 missionaries
-            new_state = State(self.cannibalLeft, self.missionaryLeft - 2, 'right', self.cannibalRight, self.missionaryRight + 2)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 2 cannibals
-            new_state = State(self.cannibalLeft - 2, self.missionaryLeft, 'right', self.cannibalRight + 2, self.missionaryRight)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 1 missionary and 1 cannibal
-            new_state = State(self.cannibalLeft - 1, self.missionaryLeft - 1, 'right', self.cannibalRight + 1, self.missionaryRight + 1)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 1 missionary
-            new_state = State(self.cannibalLeft, self.missionaryLeft - 1, 'right', self.cannibalRight, self.missionaryRight + 1)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 1 cannibal
-            new_state = State(self.cannibalLeft - 1, self.missionaryLeft, 'right', self.cannibalRight + 1, self.missionaryRight)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
+from collections import deque
+def solve_missionaries_cannibals():
+    start_state = (3, 3, 1)
+    goal_state = (0, 0, 0)
+    boat_moves = [
+        (1, 0),  
+        (2, 0),  
+        (0, 1),  
+        (0, 2),  
+        (1, 1)   
+    ]
+    queue = deque([(start_state, [start_state])])
+    visited = {start_state}  
+    while queue:
+        current_state, path = queue.popleft()
+        if current_state == goal_state:
+            return path
+        missionaries_left, cannibals_left, boat_side = current_state
+        for move_m, move_c in boat_moves:
+            if boat_side == 1:  
+                new_m_left = missionaries_left - move_m
+                new_c_left = cannibals_left - move_c
+                new_boat_side = 0
+            else:  
+                new_m_left = missionaries_left + move_m
+                new_c_left = cannibals_left + move_c
+                new_boat_side = 1
+            new_m_right = 3 - new_m_left
+            new_c_right = 3 - new_c_left
+            if (new_m_left < 0 or new_c_left < 0 or
+                new_m_right < 0 or new_c_right < 0 or
+                new_m_left > 3 or new_c_left > 3 or
+                new_m_right > 3 or new_c_right > 3):
+                continue
+            if (new_m_left > 0 and new_c_left > new_m_left) or \
+               (new_m_right > 0 and new_c_right > new_m_right):
+                continue
+            new_state = (new_m_left, new_c_left, new_boat_side)
+            if new_state not in visited:
+                visited.add(new_state)
+                queue.append((new_state, path + [new_state]))
+    return None 
+solution = solve_missionaries_cannibals()
+if solution:
+    print("Steps:\n")
+    for state in solution:
+        m_left, c_left, boat_side = state
+        m_right = 3 - m_left
+        c_right = 3 - c_left
+        if boat_side == 1:
+            boat_position = "LEFT"
         else:
-            # Move 2 missionaries
-            new_state = State(self.cannibalLeft, self.missionaryLeft + 2, 'left', self.cannibalRight, self.missionaryRight - 2)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 2 cannibals
-            new_state = State(self.cannibalLeft + 2, self.missionaryLeft, 'left', self.cannibalRight - 2, self.missionaryRight)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 1 missionary and 1 cannibal
-            new_state = State(self.cannibalLeft + 1, self.missionaryLeft + 1, 'left', self.cannibalRight - 1, self.missionaryRight - 1)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 1 missionary
-            new_state = State(self.cannibalLeft, self.missionaryLeft + 1, 'left', self.cannibalRight, self.missionaryRight - 1)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-            # Move 1 cannibal
-            new_state = State(self.cannibalLeft + 1, self.missionaryLeft, 'left', self.cannibalRight - 1, self.missionaryRight)
-            if new_state.is_valid():
-                new_state.parent = self
-                children.append(new_state)
-        return children
+            boat_position = "RIGHT"
 
-def breadth_first_search():
-    initial_state = State(3, 3, 'left', 0, 0)
-    if initial_state.is_goal():
-        return initial_state
-    frontier = [initial_state]
-    explored = set()
-    while frontier:
-        state = frontier.pop(0)
-        if state.is_goal():
-            return state
-        explored.add(state)
-        for child in state.successors():
-            if child not in explored and child not in frontier:
-                frontier.append(child)
-    return None
-
-def print_solution(solution):
-    path = []
-    while solution:
-        path.append(solution)
-        solution = solution.parent
-    for state in reversed(path):
-        print(f"({state.cannibalLeft},{state.missionaryLeft},{state.boat},{state.cannibalRight},{state.missionaryRight})")
-
-def main():
-    solution = breadth_first_search()
-    if solution:
-        print("Missionaries and Cannibals solution:")
-        print("(cannibalLeft, missionaryLeft, boat, cannibalRight, missionaryRight)")
-        print_solution(solution)
-    else:
-        print("No solution found")
-
-if __name__ == "__main__":
-    main()
-
+        print("Left:",m_left,"M",c_left,"C  |  Right:",m_right,"M",c_right,"C  |  Boat:", boat_position)
+else:
+    print("No solution found.")

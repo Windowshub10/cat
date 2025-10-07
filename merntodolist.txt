@@ -1,4 +1,4 @@
-index.js-
+//index.js-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -13,7 +13,7 @@ root.render(
 );
 reportWebVitals();
 
-app.js:-
+//app.js:-
 import React,{useState} from 'react'
 
 function ToDoList(){
@@ -206,3 +206,4 @@ li {
   flex: 1;
   text-align: left;
 }
+

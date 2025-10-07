@@ -1,44 +1,23 @@
 npm install --save bootstrap react-bootstrap
-
-// App.js
-
-import './App.css';
-import "bootstrap/dist/css/bootstrap.min.css";
-import SimpleTable from './SimpleTable';
-
-function App() {
-  return (
-    <div className="container">
-      <div style={{ padding: "10px" }}>
-        <div>
-          <SimpleTable />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default App;
-
-
 // index.js
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import SimpleTable from './App';
+import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <SimpleTable />
   </React.StrictMode>
 );
+reportWebVitals();
 
 
-//SimpleTable
 
-
+//App.js
 import { Table } from 'react-bootstrap';
 function SimpleTable() {
    return (
@@ -74,4 +53,4 @@ function SimpleTable() {
       </Table>
    );
 }
-export default SimpleTable;
+export default SimpleTable;

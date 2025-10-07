@@ -1,76 +1,58 @@
 //App.js
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function UserForm() {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ username: "", email: "" });
   const [errors, setErrors] = useState({});
-
+  const [success, setSuccess] = useState(""); 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setSuccess(""); 
   };
 
   const validateForm = () => {
-    let newErrors = {};
-    if (!formData.username) {
-      newErrors.username = 'Username is required';
-    }
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email address is invalid';
-    }
-    
+    const newErrors = {};
+    if (!formData.username) newErrors.username = "Username is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "Invalid email";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; 
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (validateForm()) {
-      
-      console.log('Form submitted:', formData);
-    } else {
-      console.log('Form has errors');
+      console.log(" Form submitted:", formData);
+      setSuccess(" Registration successful!"); 
+      setFormData({ username: "", email: "" }); 
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+        <label>Username:</label>
+        <input name="username" value={formData.username} onChange={handleChange} />
+        {errors.username && <p style={{ color: "red" }}>{errors.username}</p>}
       </div>
+
       <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+        <label>Email:</label>
+        <input name="email" value={formData.email} onChange={handleChange} />
+        {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
       </div>
+
       <button type="submit">Register</button>
+
+     
+      {success && <p style={{ color: "green", marginTop: "10px" }}>{success}</p>}
     </form>
   );
 }
 
 export default UserForm;
-
 
 //index.js
 

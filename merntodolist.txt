@@ -1,164 +1,97 @@
-//App.js
+index.js-
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import ToDoList from './App';
+import reportWebVitals from './reportWebVitals';
 
-import ToDoList from "./ToDoList.js"; 
-function App(){ 
-  return (<ToDoList/>) 
-} 
-export default App 
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <ToDoList/>
+  </React.StrictMode>
+);
+reportWebVitals();
 
-//ToDoList
+app.js:-
+import React,{useState} from 'react'
 
-import React,{useState} from 'react' 
- 
-function ToDoList(){ 
-    const [tasks,setTasks] = useState(["Eat Breakfast","Take Shower"]); 
-    const [newTask,setNewTask] = useState(""); 
- 
-    function handleInputChange(event) { 
-       setNewTask(event.target.value); 
-    } 
-    function addTask(){ 
-        if(newTask.trimEnd()!==""){ 
-        setTasks(t=>[...tasks,newTask]); 
-        setNewTask(""); 
-        } 
-    } 
-     
-    function deleteTask(index){ 
-        const updatedTasks = tasks.filter((_, i) =>i !== index); 
-        setTasks(updatedTasks); 
- 
-    } 
-    function moveTaskUp(index){ 
-        if(index>0){ 
-        const updatedTasks=[...tasks]; 
-        [updatedTasks[index],updatedTasks[index-1]]= 
-        [updatedTasks[index-1],updatedTasks[index]]; 
-        setTasks(updatedTasks); 
-    } 
- 
-    } 
-    function moveTaskDown(index){ 
-    if(index<tasks.length - 1){ 
-        const updatedTasks=[...tasks]; 
-        [updatedTasks[index],updatedTasks[index+1]]= 
-        [updatedTasks[index+1],updatedTasks[index]]; 
-        setTasks(updatedTasks); 
-    } 
-} 
-        return( 
-            <div className="to-do-list"> 
-                <h1>To-Do-List</h1> 
-            <div> 
-                 <input 
-                 type="text" 
-                 placeholder="Enter a task.." 
-                 value={newTask} 
-                 onChange={handleInputChange}></input> 
-            <button 
-                className="add-button" 
-                onClick={addTask}>ADD</button> 
-            </div> 
-            <ol> 
-                {tasks.map((task,index)=> 
-                    <li key={index}> 
-                        <span className="text">{task}</span> 
-                        <button 
-                            className="delete-button" 
-                            onClick={()=>deleteTask(index)}> 
-                                Delete 
-                                </button> 
-                            <button 
-                            className="move-button" 
-                            onClick={()=>moveTaskUp(index)}> 
-                                Up 
-                            </button> 
-                            <button 
-                            className="move-button" 
-                            onClick={()=>moveTaskDown(index)}> 
-                                Down 
-                            </button> 
-                            
-                    </li> 
-                        )} 
-                 
-            </ol> 
-            </div>); 
- 
-      
-} 
- 
-export default ToDoList
+function ToDoList(){
+    const [tasks,setTasks] = useState(["Eat Breakfast","Take Shower"]);
+    const [newTask,setNewTask] = useState("");
 
+    function handleInputChange(event) {
+       setNewTask(event.target.value);
+    }
+    function addTask(){
+        if(newTask.trimEnd()!==""){
+        setTasks(t=>[...tasks,newTask]);
+        setNewTask("");
+        }
+    }
 
-//index.css
+    function deleteTask(index){
+        const updatedTasks = tasks.filter((_, i) =>i !== index);
+        setTasks(updatedTasks);
 
-body{ 
-  background-color: hsl(0,0%,10%); 
-} 
-.to-do-list{ 
-  font-family:Arial,sans-serif; 
-  text-align: center; 
-  margin-top:100px; 
-} 
-h1{ 
-  font-size: 4rem; 
-  color:white; 
-} 
-button{ 
-  font-size: 1.7rem; 
-  font-weight:bold; 
-  padding:10px20px; 
-  color: white; 
-  border: none; 
-  border-radius: 5px; 
-  cursor:pointer; 
-  transition:background-color0.5sease; 
- 
-} 
-.add-button{ 
-  background-color: hsl(125,47%,54%); 
-} 
-.add-button:hover{ 
-  background-color: hsl(125,47%,44%); 
-} 
-.delete-button{ 
-  background-color: hsl(10,90%,50%); 
+    }
+    function moveTaskUp(index){
+        if(index>0){
+        const updatedTasks=[...tasks];
+        [updatedTasks[index],updatedTasks[index-1]]=
+        [updatedTasks[index-1],updatedTasks[index]];
+        setTasks(updatedTasks);
+    }
+
+    }
+    function moveTaskDown(index){
+    if(index<tasks.length - 1){
+        const updatedTasks=[...tasks];
+        [updatedTasks[index],updatedTasks[index+1]]=
+        [updatedTasks[index+1],updatedTasks[index]];
+        setTasks(updatedTasks);
+    }
 }
-.delete-button:hover{ 
-  background-color: hsl(10,90%,40%); 
-} 
-.move-button{ 
-  background-color: hsl(204,90%,64%); 
-} 
-.move-button:hover{ 
-background-color: hsl(204,90%,54%); 
-} 
-input[type="text"]{ 
-font-size: 1.6rem; 
-padding:10px; 
-border: 2pxsolidhsla(0,0%,80%,0.5); 
-border-radius: 5px; 
-} 
-ol{ 
-  padding:0; 
-} 
-li{ 
-  font-size: 2rem; 
-  font-weight: bold; 
-  padding: 15px; 
-  background-color: hsl(0,0%,97%); 
-  margin-bottom: 10px; 
-  border:3pxsolidhsla(0,0%,85%,0.75); 
-  border-radius: 5px; 
-  display:flex; 
-  align-items:center; 
-  } 
-  .text{ 
-    flex:1; 
-  } 
-  .delete-button,.move-button{ 
-    padding:8px12px; 
-    font-size: 1.4rem; 
-    margin-left: 10px; 
-  } 
+        return(
+            <div className="to-do-list">
+                <h1>To-Do-List</h1>
+            <div>
+                 <input
+                 type="text"
+                 placeholder="Enter a task.."
+                 value={newTask}
+                 onChange={handleInputChange}></input>
+            <button
+                className="add-button"
+                onClick={addTask}>ADD</button>
+            </div>
+            <ol>
+                {tasks.map((task,index)=>
+                    <li key={index}>
+                        <span className="text">{task}</span>
+                        <button
+                            className="delete-button"
+                            onClick={()=>deleteTask(index)}>
+                                Delete
+                                </button>
+                            <button
+                            className="move-button"
+                            onClick={()=>moveTaskUp(index)}>
+                                Up
+                            </button>
+                            <button
+                            className="move-button"
+                            onClick={()=>moveTaskDown(index)}>
+                                Down
+                            </button>
+
+                    </li>
+                        )}
+
+            </ol>
+            </div>);
+
+
+}
+
+export default ToDoList;

@@ -1,61 +1,56 @@
 // app.js
 
-angular.module('todoApp', [])
-    .controller('TodoController', function($scope) {
-        $scope.todos = [
-            { text: 'Learn AngularJS', done: false },
-            { text: 'Build a To-Do list', done: true }
-        ];
+var app = angular.module('todoApp', []);
 
-        $scope.addTodo = function() {
-            if ($scope.newTodoText) {
-                $scope.todos.push({ text: $scope.newTodoText, done: false });
-                $scope.newTodoText = ''; // Clear input
-            }
-        };
+app.controller('TodoCtrl', function($scope) {
+  $scope.tasks = [
+    { text: 'Learn AngularJS', done: false },
+    { text: 'Build a To-Do List', done: true }
+  ];
 
-        $scope.removeTodo = function(todoToRemove) {
-            $scope.todos = $scope.todos.filter(function(todo) {
-                return todo !== todoToRemove;
-            });
-        };
+  $scope.addTask = function() {
+    if ($scope.newTask) {
+      $scope.tasks.push({ text: $scope.newTask, done: false });
+      $scope.newTask = '';
+    }
+  };
 
-        $scope.remaining = function() {
-            var count = 0;
-            angular.forEach($scope.todos, function(todo) {
-                count += todo.done ? 0 : 1;
-            });
-            return count;
-        };
-    });
+  $scope.deleteTask = function(task) {
+    $scope.tasks = $scope.tasks.filter(t => t !== task);
+  };
 
+  $scope.leftCount = function() {
+    return $scope.tasks.filter(t => !t.done).length;
+  };
+});
 
 // index.html
 
+
 <!DOCTYPE html>
-<html lang="en" ng-app="todoApp">
+<html ng-app="todoApp">
 <head>
-    <meta charset="UTF-8">
-    <title>AngularJS To-Do List</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="app.js"></script>
+  <title>Simple AngularJS To-Do App</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
 </head>
 <body>
-    <div ng-controller="TodoController">
-        <h2>My To-Do List</h2>
-        <input type="text" ng-model="newTodoText" placeholder="Add a new task">
-        <button ng-click="addTodo()">Add Task</button>
-
-        <ul>
-            <li ng-repeat="todo in todos">
-                <input type="checkbox" ng-model="todo.done">
-                <span ng-class="{ 'done': todo.done }">{{ todo.text }}</span>
-                <button ng-click="removeTodo(todo)">Remove</button>
-            </li>
-        </ul>
-
-        <p>Remaining tasks: {{ remaining() }}</p>
+  <div class="container" ng-controller="TodoCtrl">
+    <h2>My To-Do List</h2>
+    <div>
+      <input type="text" ng-model="newTask" placeholder="Enter a task">
+      <button ng-click="addTask()">Add</button>
     </div>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"499e684b7b1043878977050a0a606794","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+    <ul>
+     <li ng-repeat="task in tasks"> 
+       <label>
+          <input type="checkbox" ng-model="task.done">
+          <span ng-class="{done: task.done}">{{ task.text }}</span>
+        </label>
+        <button ng-click="deleteTask(task)">Remove</button>
+      </li><br>
+    </ul>
+    <p>Tasks left: {{ leftCount() }}</p>
+  </div>
 </body>
 </html>

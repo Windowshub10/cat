@@ -54,7 +54,6 @@ Step 4: Create react app
 (optional: to come out from server folder ) cd ..
 npm create react-app client
 cd client
-npm audit fix --force
 npm install socket.io-client
 
 
@@ -117,5 +116,6 @@ Step 5: Create two terminal
 cmd: node server.js
 
 2nd terminal: Go to client folder
-cmd: npm install react-script@latest 
+cmd: npm install react-scripts@latest .........(optional) 
 npm start
+

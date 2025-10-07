@@ -1,4 +1,6 @@
+//1st step :- npm create react-app myapp
 npm install --save bootstrap react-bootstrap
+
 // index.js
 
 import React from 'react';
@@ -54,3 +56,4 @@ function SimpleTable() {
    );
 }
 export default SimpleTable;
+

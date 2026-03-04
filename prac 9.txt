@@ -1,3 +1,6 @@
+## Multiple histogram and multiple boxplots, Multiple scatter plots and colouring the graph
+
+
 library(ggplot2)
 #multiple histogram
 ggplot(iris, aes(x = Sepal.Length, fill = Species)) +
@@ -21,4 +24,5 @@ facet_wrap(~ Species)
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
 geom_point() +
 scale_color_manual(values = c("red","green","blue"))
+
 

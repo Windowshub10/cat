@@ -32,9 +32,14 @@ plot(x = mtcars$wt, y = mtcars$mpg,
      col = "blue")   
 
 #scatter plot using ggplot2
-#  install.packages("ggplot2")     
 
+install.packages("ggplot2")     
 library(ggplot2)
-ggplot(data = mtcars, aes(x = wt, y = mpg)) +  geom_point(color = "blue", shape = 19) + labs(title = "Scatter Plot of MPG vs. Weight",
-       x = "Weight (in 1000 lbs)",
-       y = "Miles Per Gallon (MPG)") +  theme_minimal() 
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color = "blue", shape = 19) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Scatter Plot of MPG vs. Weight",
+       x = "Weight (1000 lbs)",
+       y = "Miles Per Gallon (MPG)") +
+  theme_minimal()
+

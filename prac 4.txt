@@ -1,0 +1,24 @@
+data<-read.csv("E://EDA//prac 4//airquality.csv")
+data
+data(airquality) # Load inbuilt dataset
+head(airquality) # View first rows
+str(airquality) # Structure of dataset
+
+# A) Summary Statistics
+summary(airquality)
+
+# B) Boxplot & Interquartile Range (IQR)
+boxplot(airquality$Ozone,
+        main="Boxplot of Ozone",
+        col="lightblue")
+IQR(airquality$Ozone, na.rm=TRUE)
+
+# C) Checking Missing Values
+sum(is.na(airquality))
+colSums(is.na(airquality))
+
+# D) Histogram
+hist(airquality$Temp,
+     main="Histogram of Temperature",
+     xlab="Temperature",
+     col="orange")

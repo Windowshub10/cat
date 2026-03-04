@@ -1,0 +1,21 @@
+## Managing Data Frames with the dplyr package 
+
+
+install.packages("dplyr")
+library(dplyr)
+data <- data.frame(
+  Name = c("A", "B", "C", "D"),
+  Age = c(20, 22, 21, 23),
+  Marks = c(75, 88, 64, 91),
+  Gender = c("F", "M", "F", "M")
+)
+data  
+data['Age']  
+filter(data,Age > 20)       
+filter(data,Marks > 80)
+arrange(data,Marks)
+select(data,Name,Marks)
+rename(data,Naam=Name)
+mutate(data,Summ= Age+Marks)#existing data rehta hai
+transmute(data,div= Age/Marks)#existing data nhi rehta hai
+summarize(data,dhruv=sum(Marks),age=max(Age))

@@ -1,0 +1,27 @@
+#functions
+data(mtcars)
+head(mtcars)
+str(mtcars)
+dim(mtcars)
+summary(mtcars)
+colnames(mtcars)
+
+#scatterplot
+install.packages("ggplot2")
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg, color = as.factor(am))) +
+geom_point() +
+labs(color = "Transmission (0 = auto, 1 = manual)", x = "Weight (1000 lbs)", y = "Miles per Gallon")
+
+#histogram
+hist(mtcars$mpg)
+
+#pair plot
+pairs(mtcars[, 1:4])
+
+#Data Manipulation
+library(dplyr)
+filter(mtcars, mpg > 20)
+select(mtcars, mpg, wt)
+mutate(mtcars, efficiency = mpg/wt)
+arrange(mtcars, desc(mpg))

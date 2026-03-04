@@ -1,0 +1,27 @@
+## Use bar plot and identify the difference between bar plot and histograms. 
+
+#Bar Plot
+# Create a vector of sales data
+fruits <- c("Apple", "Orange", "Banana", "Mango")
+sales_data <- c(23, 10, 18, 5)
+# Create the bar plot
+barplot(sales_data, names.arg = fruits, 
+        main = "Fruit Sales Comparison",
+        xlab = "Fruit Type",
+        ylab = "Number Sold",
+        col = "skyblue",
+        border = "black")
+
+
+#Histogram
+# Generate sample continuous numerical data
+set.seed(123)
+student_scores <- round(rnorm(100, mean = 70, sd = 10), 0)
+# Create the histogram
+hist(student_scores, 
+     main = "Distribution of Student Scores",
+     xlab = "Score Range",
+     ylab = "Frequency",
+     col = "lightgreen",
+     border = "black",
+     breaks = 10)

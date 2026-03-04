@@ -1,0 +1,58 @@
+
+## Use dplyr Grammar for inbuilt data set car
+
+data <- read.csv("E://Dhruv tyit//EDA//prac 2//Automobile.csv")
+head(data) #398
+filter(data,weight>4000)
+arrange(data,weight)
+select(data,model_year,origin)
+rename(data,M_Y=model_year)
+mutate(data,MpgH=mpg/horsepower)
+transmute(data,MpgH=mpg+horsepower)
+summarize(data,max(weight),min(mpg),sum(displacement),mean(horsepower))
+data %>%
+  group_by(origin) %>%
+  summarise(total_cars = n())
+data %>%
+  group_by(model_year) %>%
+  summarise(avg_mpg = mean(mpg))
+
+
+
+
+
+
+
+
+
+
+### Inbluid wala code.
+
+
+data("mtcars")
+library(dplyr)
+
+# Select only the Miles Per Gallon (mpg), Cylinders (cyl), and Horsepower (hp) columns
+mtcars %>%
+  select(mpg, cyl, hp)
+
+# Find cars that have 4 cylinders AND more than 90 horsepower
+mtcars %>%
+  filter(cyl == 4, hp > 90)
+
+# Sort the cars by Miles Per Gallon, from most efficient to least efficient
+mtcars %>%
+  arrange(desc(mpg))
+
+# The weight (wt) column is in 1000s of lbs. Let's create a new column with the exact weight in pounds.
+mtcars %>%
+  mutate(weight_in_lbs = wt * 1000) %>%
+  select(mpg, wt, weight_in_lbs) # Selecting just these 3 so it's easy to read
+
+# Calculate the average horsepower and average mpg for each engine cylinder type (4, 6, or 8)
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(
+    avg_hp = mean(hp),
+    avg_mpg = mean(mpg)
+  )

@@ -1,7 +1,7 @@
 
 ## Use dplyr Grammar for inbuilt data set car
 
-data <- read.csv("E://Dhruv tyit//EDA//prac 2//Automobile.csv")
+data <- read.csv("E://excel csv file path//Automobile.csv")
 head(data) #398
 filter(data,weight>4000)
 arrange(data,weight)
@@ -55,4 +55,5 @@ mtcars %>%
   summarize(
     avg_hp = mean(hp),
     avg_mpg = mean(mpg)
+
   )

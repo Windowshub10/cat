@@ -17,3 +17,24 @@ plot(
   col='green'
 
 )
+
+
+
+
+# Mam ne diya hua code
+#simple method scatterplot
+
+plot(x = mtcars$wt, y = mtcars$mpg,
+     main = "Scatter Plot of MPG vs. Weight", 
+     xlab = "Weight (in 1000 lbs)",         
+     ylab = "Miles Per Gallon (MPG)",        
+     pch = 19,                              
+     col = "blue")   
+
+#scatter plot using ggplot2
+#  install.packages("ggplot2")     
+
+library(ggplot2)
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +  geom_point(color = "blue", shape = 19) + labs(title = "Scatter Plot of MPG vs. Weight",
+       x = "Weight (in 1000 lbs)",
+       y = "Miles Per Gallon (MPG)") +  theme_minimal() 

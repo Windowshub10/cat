@@ -1,3 +1,5 @@
+##  Scatter plot between two variables
+
 hours_studied <- c(1, 2, 3, 4, 5, 6, 7, 8)
 exam_score   <- c(40, 45, 50, 55, 65, 70, 78, 85)
 
@@ -13,4 +15,5 @@ plot(
   ylab = "Exam Score",
   pch=19,
   col='green'
+
 )

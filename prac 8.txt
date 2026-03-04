@@ -1,6 +1,9 @@
+## Five number summary in exploratory data analysis
+
 data <- c(25, 34, 28, 48, 52, 37, 29, 35, 54, 43, 64, 39, 58, 45)
 
 fivenum(data)
 
 summary(data)
 boxplot(data)
+

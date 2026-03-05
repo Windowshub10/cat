@@ -18,4 +18,5 @@ select(data,Name,Marks)
 rename(data,Naam=Name)
 mutate(data,Summ= Age+Marks)#existing data rehta hai
 transmute(data,div= Age/Marks)#existing data nhi rehta hai
-summarize(data,dhruv=sum(Marks),age=max(Age))
+
+summarize(data,Parth=sum(Marks),age=max(Age))

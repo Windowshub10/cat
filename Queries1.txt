@@ -1,0 +1,135 @@
+## Daily, Weekly, Monthly, Quarterly profit of each store
+WITH 
+MEMBER [Measures].[Profit] AS
+[Measures].[Sales Total Cost] - [Measures].[Product Actual Cost]
+
+SELECT 
+[Measures].[Profit] ON COLUMNS,
+NON EMPTY
+CROSSJOIN(
+    [Dim Stores].[Store ID].[Store ID].MEMBERS,
+    [Dim Date].[Hierarchy].[Date].MEMBERS
+) ON ROWS
+FROM [Sales DW]
+
+
+## Comparison of sales and profit on various time periods
+
+WITH 
+MEMBER [Measures].[Profit] AS
+[Measures].[Sales Total Cost] - [Measures].[Product Actual Cost]
+
+SELECT
+{
+[Measures].[Sales Total Cost],
+[Measures].[Profit]
+} ON COLUMNS,
+
+NON EMPTY
+[Dim Date].[Hierarchy].[Date].MEMBERS ON ROWS
+
+FROM [Sales DW]
+
+
+## Comparison of sales in various time bands of the day
+
+SELECT
+[Measures].[Sales Total Cost] ON COLUMNS,
+
+NON EMPTY
+[Dim Time].[Time Band].[Time Band].MEMBERS ON ROWS
+
+FROM [Sales DW]
+
+
+
+## Which product has more demand on which location
+SELECT
+[Measures].[Quantity] ON COLUMNS,
+
+NON EMPTY
+CROSSJOIN(
+    [Dim Stores].[Store ID].[Store ID].MEMBERS,
+    [Dim Product].[Product Key].[Product Key].MEMBERS
+) ON ROWS
+
+FROM [Sales DW]
+
+
+## Trend of sales by time period of the day over week, month, year
+
+SELECT
+[Measures].[Sales Total Cost] ON COLUMNS,
+
+NON EMPTY
+CROSSJOIN(
+    [Dim Date].[Hierarchy].[Date].MEMBERS,
+    [Dim Time].[Time Band].[Time Band].MEMBERS
+) ON ROWS
+
+FROM [Sales DW]
+
+
+
+## On what day sales is higher
+
+SELECT
+[Measures].[Sales Total Cost] ON COLUMNS,
+
+TOPCOUNT(
+    [Dim Date].[Hierarchy].[Date].MEMBERS,
+    1,
+    [Measures].[Sales Total Cost]
+) ON ROWS
+
+FROM [Sales DW]
+
+
+
+## On every Sunday of this month, what is sales and profit
+
+WITH 
+MEMBER [Measures].[Profit] AS
+[Measures].[Sales Total Cost] - [Measures].[Product Actual Cost]
+
+SELECT
+{
+[Measures].[Sales Total Cost],
+[Measures].[Profit]
+} ON COLUMNS,
+
+FILTER(
+    [Dim Date].[Hierarchy].[Date].MEMBERS,
+    [Dim Date].[Day Name].CURRENTMEMBER.NAME = "Sunday"
+) ON ROWS
+
+FROM [Sales DW]
+
+
+
+##Trend of sales on weekday and weekend
+
+
+SELECT
+[Measures].[Sales Total Cost] ON COLUMNS,
+
+{
+[Dim Date].[Day Type].[Weekday],
+[Dim Date].[Day Type].[Weekend]
+} ON ROWS
+
+FROM [Sales DW]
+
+
+
+
+
+
+
+
+
+
+
+
+
+

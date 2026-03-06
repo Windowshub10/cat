@@ -1,135 +1,112 @@
-## Daily, Weekly, Monthly, Quarterly profit of each store
-WITH 
-MEMBER [Measures].[Profit] AS
-[Measures].[Sales Total Cost] - [Measures].[Product Actual Cost]
+1️⃣ Daily / Weekly / Monthly / Quarterly profit of each store
+
+Daily
 
 SELECT 
 [Measures].[Profit] ON COLUMNS,
-NON EMPTY
-CROSSJOIN(
-    [Dim Stores].[Store ID].[Store ID].MEMBERS,
-    [Dim Date].[Hierarchy].[Date].MEMBERS
-) ON ROWS
+([Dim Store].[Store Name].Members *
+ [Dim Date].[Date].Members) ON ROWS
+FROM [Sales DW]
+
+Weekly
+
+SELECT 
+[Measures].[Profit] ON COLUMNS,
+([Dim Store].[Store Name].Members *
+ [Dim Date].[Week].Members) ON ROWS
+FROM [Sales DW]
+
+Monthly
+
+SELECT 
+[Measures].[Profit] ON COLUMNS,
+([Dim Store].[Store Name].Members *
+ [Dim Date].[Month].Members) ON ROWS
+FROM [Sales DW]
+
+Quarterly
+
+SELECT 
+[Measures].[Profit] ON COLUMNS,
+([Dim Store].[Store Name].Members *
+ [Dim Date].[Quarter].Members) ON ROWS
 FROM [Sales DW]
 
 
-## Comparison of sales and profit on various time periods
+---
 
-WITH 
-MEMBER [Measures].[Profit] AS
-[Measures].[Sales Total Cost] - [Measures].[Product Actual Cost]
+2️⃣ Comparison of sales and profit on various time periods
 
 SELECT
 {
-[Measures].[Sales Total Cost],
+[Measures].[Sales],
 [Measures].[Profit]
 } ON COLUMNS,
-
-NON EMPTY
-[Dim Date].[Hierarchy].[Date].MEMBERS ON ROWS
-
+[Dim Date].[Month].Members ON ROWS
 FROM [Sales DW]
 
 
-## Comparison of sales in various time bands of the day
+---
+
+3️⃣ Comparison of sales in various time bands of the day
 
 SELECT
-[Measures].[Sales Total Cost] ON COLUMNS,
-
-NON EMPTY
-[Dim Time].[Time Band].[Time Band].MEMBERS ON ROWS
-
+[Measures].[Sales] ON COLUMNS,
+[Dim Time].[Time Band].Members ON ROWS
 FROM [Sales DW]
 
 
+---
 
-## Which product has more demand on which location
+4️⃣ Which product has more demand on which location
+
 SELECT
 [Measures].[Quantity] ON COLUMNS,
-
-NON EMPTY
-CROSSJOIN(
-    [Dim Stores].[Store ID].[Store ID].MEMBERS,
-    [Dim Product].[Product Key].[Product Key].MEMBERS
-) ON ROWS
-
+([Dim Product].[Product Name].Members *
+ [Dim Store].[Store Name].Members) ON ROWS
 FROM [Sales DW]
 
 
-## Trend of sales by time period of the day over week, month, year
+---
+
+5️⃣ Trend of sales by time period of the day over week / month / year
 
 SELECT
-[Measures].[Sales Total Cost] ON COLUMNS,
-
-NON EMPTY
-CROSSJOIN(
-    [Dim Date].[Hierarchy].[Date].MEMBERS,
-    [Dim Time].[Time Band].[Time Band].MEMBERS
-) ON ROWS
-
+[Measures].[Sales] ON COLUMNS,
+([Dim Time].[Time Band].Members *
+ [Dim Date].[Month].Members) ON ROWS
 FROM [Sales DW]
 
 
+---
 
-## On what day sales is higher
+6️⃣ On what day sales is higher
 
 SELECT
-[Measures].[Sales Total Cost] ON COLUMNS,
-
-TOPCOUNT(
-    [Dim Date].[Hierarchy].[Date].MEMBERS,
-    1,
-    [Measures].[Sales Total Cost]
-) ON ROWS
-
+[Measures].[Sales] ON COLUMNS,
+[Dim Date].[Day Name].Members ON ROWS
 FROM [Sales DW]
 
 
+---
 
-## On every Sunday of this month, what is sales and profit
-
-WITH 
-MEMBER [Measures].[Profit] AS
-[Measures].[Sales Total Cost] - [Measures].[Product Actual Cost]
+7️⃣ On every Sunday of this month, sales and profit
 
 SELECT
 {
-[Measures].[Sales Total Cost],
+[Measures].[Sales],
 [Measures].[Profit]
 } ON COLUMNS,
-
-FILTER(
-    [Dim Date].[Hierarchy].[Date].MEMBERS,
-    [Dim Date].[Day Name].CURRENTMEMBER.NAME = "Sunday"
-) ON ROWS
-
+[Dim Date].[Date].Members ON ROWS
 FROM [Sales DW]
+WHERE ([Dim Date].[Day Name].[Sunday])
 
 
+---
 
-##Trend of sales on weekday and weekend
-
+8️⃣ Trend of sales on weekday and weekend
 
 SELECT
-[Measures].[Sales Total Cost] ON COLUMNS,
-
-{
-[Dim Date].[Day Type].[Weekday],
-[Dim Date].[Day Type].[Weekend]
-} ON ROWS
-
+[Measures].[Sales] ON COLUMNS,
+[Dim Date].[Day Type].Members ON ROWS
 FROM [Sales DW]
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,123 @@
+# Take 2PC (PCA,B), 3 Switches2960, 3 Routers1941, Server
+#Connections , Add switch ports , then connect routers(Serial connections).
+
+#PCA
+ ipv6 address:-  2001:DB8:1:10::10  /64   Gateway:- FE80::1
+#PCB
+ ipv6 address:-  2001:DB8:1:11::11  /64   Gateway:- FE80::1
+#Server
+ ipv6 address:-  2001:DB8:1:30::30  /64   Gateway:- FE80::3 
+
+#R1,R2,R3
+enable secret enpa55
+
+#R1(CLI)
+
+int gig0/0
+ipv6 address 2001:DB8:1:10::1/64
+ipv6 address FE80::1 link-local
+no shut
+exit
+
+int gig0/1
+ipv6 address 2001:DB8:1:11::1/64
+ipv6 address FE80::1 link-local
+no shut
+exit
+
+int  se0/1/0
+ipv6 address 2001:DB8:1:1::1/64
+ipv6 address FE80::1 link-local
+no shut
+exit
+
+#R2
+int  se0/1/0
+ipv6 address 2001:DB8:1:1::2/64
+ipv6 address FE80::2 link-local
+no shut
+exit
+
+int  se0/1/1
+ipv6 address 2001:DB8:1:2::2/64
+ipv6 address FE80::2 link-local
+no shut
+exit
+
+#R3
+int gig0/0
+ipv6 address 2001:DB8:1:30::1/64
+ipv6 address FE80::3 link-local
+no shut
+exit
+
+int  se0/1/0
+ipv6 address 2001:DB8:1:2::1/64
+ipv6 address FE80::3 link-local
+no shut
+exit
+
+
+#R1
+ipv6 unicast-routing
+ipv6 route 2001:DB8:1:2::0/64 2001:DB8:1:1::2
+ipv6 route 2001:DB8:1:30::0/64 2001:DB8:1:1::2
+
+#R2
+ipv6 unicast-routing
+ipv6 route 2001:DB8:1:10::0/64 2001:DB8:1:1::1
+ipv6 route 2001:DB8:1:11::0/64 2001:DB8:1:1::1
+ipv6 route 2001:DB8:1:30::0/64 2001:DB8:1:2::1
+
+#R3
+ipv6 unicast-routing
+ipv6 route 2001:DB8:1:10::0/64 2001:DB8:1:2::2
+ipv6 route 2001:DB8:1:11::0/64 2001:DB8:1:2::2
+ipv6 route 2001:DB8:1:1::0/64 2001:DB8:1:2::2
+
+#PCA (Verify connectivity it should be succcessful)
+ping 2001:DB8:1:30::30
+#PCB
+ping 2001:DB8:1:30::30
+
+#R1
+ipv6 access-list BLOCK_HTTP
+deny tcp any host 2001:DB8:1:30::30 eq www
+deny tcp any host 2001:DB8:1:30::30 eq 443
+permit ipv6 any any
+exit
+int gig0/1
+ipv6 traffic-filter BLOCK_HTTP in
+exit
+
+#PCA
+Web browser: http://2001:DB8:1:30::30 
+  then check
+             https://2001:DB8:1:30::30
+
+#PCB
+Web browser: https://2001:DB8:1:30::30 (NO output will come because we denied)
+             https://2001:DB8:1:30::30
+
+#PCB(Check karo ping ho raha hai kya)
+ping 2001:DB8:1:30::30
+
+#R3
+ipv6 access-list BLOCK_ICMP
+deny icmp any any 
+permit ipv6 any any
+exit
+
+int gig0/0
+ipv6 traffic-filter BLOCK_ICMP out
+exit
+
+#PCB
+ping 2001:DB8:1:30::30(Unreachable aana chahiye)
+
+#PCA
+ping 2001:DB8:1:30::30 (Unreachable aana chahiye)
+
+Web browser: http://2001:DB8:1:30::30 
+
+

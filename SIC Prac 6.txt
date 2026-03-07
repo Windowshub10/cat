@@ -1,0 +1,191 @@
+# Use  Server(Syslog), 3Router, 2Switch(S1,S3), 2PC (PC-A,PC-B)
+#Give names
+#Give modules to the router than give names to router
+#Connections
+
+PC-A(Fa0)->S1(Fa0/1)
+Syslog(Fa0)->S1(Fa/2)
+S1(Fa0/3)->R1(Gig0/0)
+R1(Se0/1/0)->R2(Se0/1/0)
+R2(Se0/1/1)->R3(Se0/1/0)
+R3(Gig0/0)-> S3(Fa0/1)
+S3(Fa0/2)-> PCC(Fa0)
+
+
+#R1  Gig0/0  192.168.1.1  255.255.255.0 
+     Se0/1/0 10.1.1.1     255.255.255.252
+
+#R2 Se0/1/0  10.1.1.2  255.255.255.252 
+    Se0/1/1  10.2.2.2  255.255.255.252 
+
+#R3  Gig0/0    192.168.3.1  255.255.255.0
+     Se0/1/0   10.2.2.1     255.255.255.252
+
+#PC-A    192.168.1.2   255.255.255.0  192.168.1.1
+#PC-C    192.168.3.2   255.255.255.0   192.168.3.1
+#Syslog  192.168.1.50  255.255.255.0  192.168.1.1   
+
+#R1,R2,R3
+exit
+
+enable secret enpa55
+line console 0 
+password conpa55 
+login
+exit
+
+#R1,R2,R3
+ip domain-name ccnasecurity.com 
+username admin secret adminpa55 
+line vty 0 4 
+login local 
+crypto key generate rsa 
+
+How many bits in the modulus [512]: 1024 
+
+#R1
+router ospf 1 
+network 192.168.1.0 0.0.0.255 area 0 
+10.1.1.0 0.0.0.3 area 0 
+exit
+
+#R2
+router ospf 1
+network 10.1.1.0 0.0.0.3 area 0 
+network 10.2.2.0 0.0.0.3 area 0 
+exit
+
+#R3
+router ospf 1 
+network 10.2.2.0 0.0.0.3 area 0 
+network 192.168.3.0 0.0.0.255 area 0 
+exit
+
+#R1
+exit
+
+R1# > show version  (enter enter karte jao security none rehega)
+
+R1# > conf t
+R1(config)# >  license boot module c1900 technology-package securityk9 
+(Type yes) 
+
+exit
+
+copy run start 
+reload 
+
+#Password:- conpa55
+
+en
+Pass:- enpa55
+
+R1# > show version (abhi ayega security)
+
+#PCA> ping 192.168.3.2 
+(Successful) 
+#PCC> ping 192.168.1.2 
+(Successful)
+
+#R1
+mkdir ipsdir 
+Create directory filename [ipsdir]? 
+
+conf t
+ip ips config location flash:ipsdir 
+ip ips name iosips 
+ip ips notify log 
+exit 
+
+R1# > clock set 20:26:44 9 MAR 2026    #(You can give your own)
+ 
+conf t
+
+service timestamps log datetime msec 
+logging host 192.168.1.50
+
+ip ips signature-category 
+category all 
+retired true
+exit
+category ios_ips basic 
+retired false 
+exit 
+exit 
+Do you want to accept these changes? [confirm]         #(press enter)
+
+
+int gig0/0 
+ip ips iosips out 
+exit  
+
+exit
+
+R1# >  show ip ips all    #(enter enter marte jana)
+(Output)
+
+
+#Click the Syslog server->Services tab-> SYSLOG 
+(Output will be shown) 
+
+#R1
+ip ips signature-definition 
+signature 2004 0 
+status 
+retired false 
+enabled true 
+exit 
+engine 
+event-action produce-alert 
+event-action deny-packet-inline 
+exit 
+exit 
+exit 
+Do you want to accept these changes? [confirm]    #<Enter>
+
+exit
+
+R1# > show ip ips all 
+(Output) 
+
+#PCC> ping 192.168.1.2  (Unsuccessful – Request timed out) 
+#PCA> ping 192.168.3.2  (Successful) 
+
+# View the syslog messages. 
+Click the Syslog server->Services tab-> SYSLOG 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+

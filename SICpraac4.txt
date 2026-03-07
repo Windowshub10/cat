@@ -1,0 +1,153 @@
+#use Server(PCA), 2 Switches(2960)(S1,S2), 3 Routers(1941), 1Pc(PCC)
+#Attach Modules to router
+#Connections: Server(Fa0)-> Switch(S1)(Fa0/2)
+              S1(Fa0/1) -> R1(Gig0/0)
+              R1(Se0/1/0)->R2(Se0/1/0)
+              R2(Se0/1/1)->R3(Se0/1/0)
+              R3(Gig0/0)->S2(Fa0/1)
+              S2(Fa0/2)->PCC(F0)
+
+#Give names and IP Address
+PCA :- 192.168.1.3  255.255.255.0  192.168.1.1
+PCC :- 192.168.3.3  255.255.255.0  192.168.3.1 
+R1 :- Gig(0/0) :- 192.168.1.1  255.255.255.0
+      S(0/1/0) :- 10.1.1.1     255.255.255.252 
+
+R2:- S(0/1/0) :- 10.1.1.2     255.255.255.252 
+     S(0/1/1) :- 10.2.2.2    255.255.255.252 
+
+R3 :- Gig(0/0) :- 192.168.3.1  255.255.255.0
+      S(0/1/0) :- 10.2.2.1     255.255.255.252 
+
+
+
+
+#R1,R2,R3
+EXIT
+enable secret enpa55
+
+#R1,R2,R3
+line console 0
+password conpa55
+login
+exit
+
+#R1.R2,R3
+ip domain-name ccnasecurity.com
+username admin secret adminpa55
+line vty 0 4
+login local
+exit
+
+#R1,R2,R3
+crypto key generate rsa  (type 1024)
+
+#R2 
+int loopback 0
+
+ip address 192.168.2.1 255.255.255.0
+no shut 
+exit
+
+
+#R1
+ip route 192.168.3.0 255.255.255.0 10.1.1.2
+ip route 10.2.2.0 255.255.255.252 10.1.1.2
+ip route 192.168.2.0 255.255.255.0 10.1.1.2
+
+#R2
+ip route 192.168.1.0 255.255.255.0 10.1.1.1
+ip route 192.168.3.0 255.255.255.0 10.2.2.1
+
+#R3
+ip route 192.168.1.0 255.255.255.0 10.2.2.2
+ip route 192.168.2.0 255.255.255.0 10.2.2.2
+ip route 10.1.1.0 255.255.255.252 10.2.2.2
+
+#PCA
+ping 192.168.3.3
+ping 192.168.2.1
+ssh -l admin 192.168.2.1
+password: adminpa55
+exit 
+
+#PCC
+ping 192.168.1.3
+ping 192.168.2.1
+ssh -l admin 192.168.2.1
+password: adminpa55
+exit 
+
+#PCA
+Desktop->Web browser - URL: https://192.168.1.3
+
+
+#R1,R2,R3
+access-list 10 permit host 192.168.3.3
+line vty 04
+access-class 10 in
+exit
+
+#PCC(cmd)
+ssh -l admin 192.168.2.1
+password: adminpa55
+exit
+ 
+#PCA
+ssh -l admin 192.168.2.1
+
+#PCA->Services->HTTP(Off)->HTTPS(on) 
+
+#R1
+access-list 120 permit udp any host 192.168.1.3 eq domain
+access-list 120 permit tcp any host 192.168.1.3 eq smtp
+access-list 120 permit tcp any host 192.168.1.3 eq ftp
+access-list 120 deny tcp any host 192.168.1.3 eq 443
+access-list 120 permit tcp host 192.168.3.3 host 10.1.1.1 eq 22 
+
+
+int se0/1/0
+ip access-group 120 in
+exit
+
+#PCC
+URL: https://192.168.1.3 (Request timeout aayega)
+
+#PCA
+ping 192.168.2.1 (not pinged)
+
+#R1
+access-list 120 permit icmp any any echo-reply
+access-list 120 permit icmp any any unreachable
+access-list 120 deny icmp any any 
+access-list 120 permit ip any any
+
+#PCA
+ping 192.168.2.1 (successfully pinged)
+
+
+#R3
+access-list 110 permit ip 192.168.3.0 0.0.0.255 any
+int gig0/1
+ip access-group 110 in 
+exit
+
+
+access-list 100 permit tcp 10.0.0.0 0.255.255.255 host 192.168.3.1 eq 22
+access-list 100 deny ip 10.0.0.0 0.255.255.255 any
+access-list 100 deny ip 172.16.0.0 0.255.255.255 any
+access-list 100 deny ip 192.168.0.0 0.0.0.255 any
+access-list 100 deny ip 127.0.0.0 0.255.255.255 any
+access-list 100 deny ip 224.0.0.0 15.255.255.255 any
+access-list 100 permit ip any any
+
+int se0/1/0
+ip access-group 100 in
+exit
+ 
+#PCC
+ping 192.168.1.3
+ssh -l admin 192.168.2.1
+password:- adminpa55
+
+
